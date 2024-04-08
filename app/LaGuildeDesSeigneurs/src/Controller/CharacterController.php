@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CharacterController extends AbstractController
 {
-  #[Route('/characters/', name: 'app_character_display')]
+  #[Route('/characters', name: 'app_character_display', methods: ['GET'])]
   public function display(): JsonResponse
   {
     $charcter = new Character();

@@ -35,6 +35,15 @@ class Character
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $image = null;
 
+    #[ORM\Column(length: 20)]
+    private ?string $slug = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $kind = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $creation = null;
+
     public function toArray()
     {
         return get_object_vars($this);
@@ -125,6 +134,42 @@ class Character
     public function setImage(?string $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getKind(): ?string
+    {
+        return $this->kind;
+    }
+
+    public function setKind(string $kind): static
+    {
+        $this->kind = $kind;
+
+        return $this;
+    }
+
+    public function getCreation(): ?\DateTimeInterface
+    {
+        return $this->creation;
+    }
+
+    public function setCreation(\DateTimeInterface $creation): static
+    {
+        $this->creation = $creation;
 
         return $this;
     }
