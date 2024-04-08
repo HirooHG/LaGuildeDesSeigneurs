@@ -1,8 +1,26 @@
 services:
   app:
-    image: laguildeseigneur
     build: ./serve
+    restart: unless-stopped
     volumes:
       - ./app/LaGuildeDesSeigneurs:/app
     ports:
       - 8000:8000
+    depends_on:
+      - db
+  db:
+    image: mysql
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_USER=guilde_seigneurs
+      - MYSQL_PASSWORD=Y7*Z3PZ9cBNz
+  ui:
+    image: dbeaver/cloudbeaver
+    restart: unless-stopped
+    ports:
+      - 8978:8978
+    depends_on:
+      - db

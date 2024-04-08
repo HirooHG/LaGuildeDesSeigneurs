@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CharacterRepository::class)]
+#[ORM\Table(name: '`character`')]
 class Character
 {
   #[ORM\Id]
@@ -33,7 +34,7 @@ class Character
   private ?int $strength = 1600;
 
   #[ORM\Column(length: 50, nullable: true)]
-  private ?string $image = null;
+  private ?string $image = "/dame/bruh.webp";
 
   #[ORM\Column(length: 20)]
   private ?string $slug = "Tourmenteurs du Chaos";
@@ -41,7 +42,7 @@ class Character
   #[ORM\Column(length: 20)]
   private ?string $kind = "Tourmenteuse";
 
-  #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+  #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
   private ?\DateTimeInterface $creation = null;
 
   public function toArray()
