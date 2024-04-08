@@ -1,6 +1,8 @@
 services:
   app:
     image: laguildeseigneur
-    build: .
+    build: ./serve
     volumes:
-      - ./app:/app
+      - ./app/LaGuildeDesSeigneurs:/app
+    ports:
+      - 8000:8000

@@ -1,0 +1,6 @@
+services:
+  app:
+    image: init
+    build: ./init
+    volumes:
+      - ./app:/app
