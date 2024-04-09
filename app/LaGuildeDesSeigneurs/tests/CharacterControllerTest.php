@@ -28,6 +28,8 @@ class CharacterControllerTetsTest extends WebTestCase
 
   public function testDisplay(): void
   {
+    $this->client->request('POST', '/characters');
+    $this->assertResponseCode204();
     $this->client->request('GET', '/characters/d1205792756337b7bbdc86bb12f2aa01a78136c1');
 
     $this->assertJsonResponse();
@@ -44,6 +46,19 @@ class CharacterControllerTetsTest extends WebTestCase
     $this->client->request('PUT', '/characters/d1205792756337b7bbdc86bb12f2aa01a78136c1');
     $this->assertResponseCode204();
   }
+
+  public function testDelete()
+  {
+    $this->client->request('DELETE', '/characters/d1205792756337b7bbdc86bb12f2aa01a78136c1');
+    $this->assertResponseCode204();
+  }
+
+  public function testDeleteInexistingIdentifier()
+  {
+    $this->client->request('DELETE', '/characters/8f74f20597c5cf99dd42cd31331b7e6e2aeerror');
+    $this->assertError404();
+  }
+
   // Asserts that Response code is 204
   public function assertResponseCode204()
   {

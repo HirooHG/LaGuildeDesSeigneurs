@@ -54,6 +54,12 @@ class CharacterService implements CharacterServiceInterface
     return $character;
   }
 
+  public function delete(Character $character): void
+  {
+    $this->em->remove($character);
+    $this->em->flush();
+  }
+
   public function findAll(): array
   {
     $charactersFinal = array();
