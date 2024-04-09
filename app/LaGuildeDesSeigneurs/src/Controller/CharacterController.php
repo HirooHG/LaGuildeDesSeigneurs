@@ -28,6 +28,21 @@ class CharacterController extends AbstractController
 
     return new JsonResponse($character->toArray());
   }
+  #
+  #[
+    Route(
+      '/characters',
+      name: 'app_character_index',
+      methods: ['GET']
+    )
+  ]
+  public function index(): JsonResponse
+  {
+    $this->denyAccessUnlessGranted('characterIndex', null);
+    $characters = $this->characterService->findAll();
+
+    return new JsonResponse($characters);
+  }
 
   // src/Controller/CharacterController.php
   // CREATE
@@ -43,6 +58,7 @@ class CharacterController extends AbstractController
       ['identifier' => $character->getIdentifier()]
     );
     $response->headers->set('Location', $url);
+
     return $response;
   }
 }
