@@ -9,60 +9,85 @@ class CharacterControllerTetsTest extends WebTestCase
 
   private $client;
 
+  private $content;
+  private static $identifier;
+
   public function setUp(): void
   {
     $this->client = static::createClient();
   }
 
-  public function testBadIdentifier()
+  ###
+  # passing tests
+  public function testCreate()
   {
-    $this->client->request('GET', '/characters/badIdentifier');
-    $this->assertError404();
+    $this->client->request('POST', '/characters');
+    $this->assertResponseCode(201);
+    $this->assertJsonResponse();
+    $this->defineIdentifier();
+    $this->assertIdentifier();
   }
-
-  public function testInexistingIdentifier()
-  {
-    $this->client->request('GET', '/characters/8f74f20597c5cf99dd42cd31331b7e6e2aeerror');
-    $this->assertError404();
-  }
-
   public function testDisplay(): void
   {
-    $this->client->request('GET', '/characters/d1205792756337b7bbdc86bb12f2aa01a78136c1');
-
+    $this->client->request('GET', '/characters/' . self::$identifier);
+    $this->assertResponseCode(200);
     $this->assertJsonResponse();
+    $this->assertIdentifier();
   }
-
   public function testIndex()
   {
     $this->client->request('GET', '/characters');
+    $this->assertResponseCode(200);
     $this->assertJsonResponse();
   }
-
   public function testUpdate()
   {
-    $this->client->request('PUT', '/characters/d1205792756337b7bbdc86bb12f2aa01a78136c1');
-    $this->assertResponseCode204();
+    $this->client->request('PUT', '/characters/' . self::$identifier);
+    $this->assertResponseCode(204);
   }
-  // Asserts that Response code is 204
-  public function assertResponseCode204()
+  public function testDelete()
   {
-    $response = $this->client->getResponse();
-    $this->assertEquals(204, $response->getStatusCode());
+    $this->client->request('DELETE', '/characters/' . self::$identifier);
+    $this->assertResponseCode(204);
+  }
+
+  ###
+  # failing tests
+  public function testDeleteInexistingIdentifier()
+  {
+    $this->client->request('DELETE', '/characters/8f74f20597c5cf99dd42cd31331b7e6e2aeerror');
+    $this->assertResponseCode(404);
+  }
+  public function testBadIdentifier()
+  {
+    $this->client->request('GET', '/characters/badIdentifier');
+    $this->assertResponseCode(404);
+  }
+  public function testInexistingIdentifier()
+  {
+    $this->client->request('GET', '/characters/8f74f20597c5cf99dd42cd31331b7e6e2aeerror');
+    $this->assertResponseCode(404);
   }
 
   // private fn
   public function assertJsonResponse(): void
   {
     $response = $this->client->getResponse();
-    $this->assertResponseIsSuccessful();
+    $this->content = json_decode($response->getContent(), true, 50);
     $this->assertTrue($response->headers->contains('Content-Type', 'application/json'), $response->headers);
   }
 
-  // Asserts that Response returns 404
-  public function assertError404()
+  private function defineIdentifier()
+  {
+    self::$identifier = $this->content['identifier'];
+  }
+  private function assertIdentifier()
+  {
+    $this->assertEquals(self::$identifier, $this->content['identifier']);
+  }
+  public function assertResponseCode(int $code)
   {
     $response = $this->client->getResponse();
-    $this->assertEquals(404, $response->getStatusCode());
+    $this->assertEquals($code, $response->getStatusCode());
   }
 }
