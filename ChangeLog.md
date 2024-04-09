@@ -21,3 +21,7 @@ v0.4
 - Added identifiers
 - display route update
 - auto fetch
+
+v0.5
+
+- Added Security Voters
