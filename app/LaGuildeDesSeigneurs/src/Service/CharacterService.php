@@ -28,6 +28,7 @@ class CharacterService implements CharacterServiceInterface
     $character->setStrength(120);
     $character->setImage('/dames/maeglin.webp');
     $character->setCreation(new DateTime());
+    $character->setModification(new DateTime());
     $character->setIdentifier(hash('sha1', uniqid()));
 
     $this->em->persist($character);
@@ -46,6 +47,7 @@ class CharacterService implements CharacterServiceInterface
     $character->setKnowledge('Diplomatie');
     $character->setIntelligence(140);
     $character->setStrength(140);
+    $character->setModification(new DateTime());
     $character->setImage('/seigneurs/gorthol.webp');
 
     $this->em->persist($character);

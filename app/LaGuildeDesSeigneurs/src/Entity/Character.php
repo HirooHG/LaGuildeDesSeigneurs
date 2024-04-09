@@ -48,6 +48,9 @@ class Character
   #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
   private ?\DateTimeInterface $creation = null;
 
+  #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+  private ?\DateTimeInterface $modification = null;
+
   public function toArray()
   {
     return get_object_vars($this);
@@ -188,5 +191,17 @@ class Character
     $this->identifier = $identifier;
 
     return $this;
+  }
+
+  public function getModification(): ?\DateTimeInterface
+  {
+      return $this->modification;
+  }
+
+  public function setModification(?\DateTimeInterface $modification): static
+  {
+      $this->modification = $modification;
+
+      return $this;
   }
 }
