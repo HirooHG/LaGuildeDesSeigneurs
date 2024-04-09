@@ -6,4 +6,5 @@ interface CharacterServiceInterface
 {
   // Creates the character
   public function create();
+  public function findAll();
 }

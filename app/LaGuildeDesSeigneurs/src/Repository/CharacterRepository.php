@@ -35,6 +35,12 @@ class CharacterRepository extends ServiceEntityRepository
   //            ->getResult()
   //        ;
   //    }
+  public function findAll(): array
+  {
+    return $this->createQueryBuilder('Character')
+      ->getQuery()
+      ->getResult();
+  }
 
   public function findOneByIdentifier($identifier): ?Character
   {

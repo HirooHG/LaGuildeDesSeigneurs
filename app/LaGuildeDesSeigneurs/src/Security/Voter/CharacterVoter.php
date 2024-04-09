@@ -11,10 +11,12 @@ class CharacterVoter extends Voter
 {
   public const CHARACTER_DISPLAY = 'characterDisplay';
   public const CHARACTER_CREATE = 'characterCreate';
+  public const CHARACTER_INDEX = 'characterIndex';
 
   private const ATTRIBUTES = array(
     self::CHARACTER_CREATE,
     self::CHARACTER_DISPLAY,
+    self::CHARACTER_INDEX
   );
   // Checks if is allowed to display
   private function canDisplay($token, $subject)
@@ -39,6 +41,7 @@ class CharacterVoter extends Voter
   {
     switch ($attribute) {
       case self::CHARACTER_CREATE:
+      case self::CHARACTER_INDEX:
         return $this->canCreate($token, $subject);
       case self::CHARACTER_DISPLAY:
         return $this->canDisplay($token, $subject);
