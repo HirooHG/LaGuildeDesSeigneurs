@@ -83,7 +83,6 @@ class CharacterController extends AbstractController
   {
     $character = $this->characterService->create();
 
-    return new JsonResponse($character->toArray(), JsonResponse::HTTP_CREATED);
     $response = new JsonResponse($character->toArray(), JsonResponse::HTTP_CREATED);
     $url = $this->generateUrl(
       'app_character_display',
