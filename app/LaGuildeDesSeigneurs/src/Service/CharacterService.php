@@ -36,6 +36,24 @@ class CharacterService implements CharacterServiceInterface
     return $character;
   }
 
+  public function update(Character $character): Character
+  {
+    $character->setKind('Seigneur');
+    $character->setName('Gorthol');
+    $character->setSlug('gorthol');
+    $character->setSurname('Heaume de terreur');
+    $character->setCaste('Chevalier');
+    $character->setKnowledge('Diplomatie');
+    $character->setIntelligence(140);
+    $character->setStrength(140);
+    $character->setImage('/seigneurs/gorthol.webp');
+
+    $this->em->persist($character);
+    $this->em->flush();
+
+    return $character;
+  }
+
   public function findAll(): array
   {
     $charactersFinal = array();

@@ -39,6 +39,18 @@ class CharacterControllerTetsTest extends WebTestCase
     $this->assertJsonResponse();
   }
 
+  public function testUpdate()
+  {
+    $this->client->request('PUT', '/characters/d1205792756337b7bbdc86bb12f2aa01a78136c1');
+    $this->assertResponseCode204();
+  }
+  // Asserts that Response code is 204
+  public function assertResponseCode204()
+  {
+    $response = $this->client->getResponse();
+    $this->assertEquals(204, $response->getStatusCode());
+  }
+
   // private fn
   public function assertJsonResponse(): void
   {
