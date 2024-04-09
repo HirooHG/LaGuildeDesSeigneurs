@@ -25,3 +25,12 @@ v0.4
 v0.5
 
 - Added Security Voters
+
+v0.6
+
+- Index route
+- negative tests
+
+v0.7
+
+- update route
