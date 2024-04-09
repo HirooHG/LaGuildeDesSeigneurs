@@ -15,3 +15,9 @@ v0.3
 
 - Added create character route
 - Added persisting character
+
+v0.4
+
+- Added identifiers
+- display route update
+- auto fetch

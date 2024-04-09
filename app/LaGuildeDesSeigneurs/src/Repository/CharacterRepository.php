@@ -16,33 +16,32 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CharacterRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Character::class);
-    }
+  public function __construct(ManagerRegistry $registry)
+  {
+    parent::__construct($registry, Character::class);
+  }
 
-    //    /**
-    //     * @return Character[] Returns an array of Character objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+  //    /**
+  //     * @return Character[] Returns an array of Character objects
+  //     */
+  //    public function findByExampleField($value): array
+  //    {
+  //        return $this->createQueryBuilder('c')
+  //            ->andWhere('c.exampleField = :val')
+  //            ->setParameter('val', $value)
+  //            ->orderBy('c.id', 'ASC')
+  //            ->setMaxResults(10)
+  //            ->getQuery()
+  //            ->getResult()
+  //        ;
+  //    }
 
-    //    public function findOneBySomeField($value): ?Character
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+  public function findOneByIdentifier($identifier): ?Character
+  {
+    return $this->createQueryBuilder('Character')
+      ->andWhere('Character.identifier = :identifier')
+      ->setParameter('identifier', $identifier)
+      ->getQuery()
+      ->getOneOrNullResult();
+  }
 }

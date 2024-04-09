@@ -15,6 +15,9 @@ class Character
   #[ORM\Column]
   private ?int $id = null;
 
+  #[ORM\Column(length: 40)]
+  private ?string $identifier = null;
+
   #[ORM\Column(length: 20)]
   private ?string $name = "Fëanturi";
 
@@ -37,7 +40,7 @@ class Character
   private ?string $image = "/dame/bruh.webp";
 
   #[ORM\Column(length: 20)]
-  private ?string $slug = "Tourmenteurs du Chaos";
+  private ?string $slug = "TourmenteursDuChaos";
 
   #[ORM\Column(length: 20)]
   private ?string $kind = "Tourmenteuse";
@@ -171,6 +174,18 @@ class Character
   public function setCreation(\DateTimeInterface $creation): static
   {
     $this->creation = $creation;
+
+    return $this;
+  }
+
+  public function getIdentifier(): ?string
+  {
+    return $this->identifier;
+  }
+
+  public function setIdentifier(string $identifier): static
+  {
+    $this->identifier = $identifier;
 
     return $this;
   }
