@@ -21,7 +21,22 @@ class BuildingTest extends WebTestCase
   # passing tests
   public function testCreate()
   {
-    $this->client->request('POST', '/buildings');
+    $this->client->request(
+      'POST',
+      '/buildings',
+      array(), // Parameters
+      array(), // Files
+      array('CONTENT_TYPE' => 'application/json'), // Server
+      <<<JSON
+        {
+          "name": "Lenora",
+          "caste": "Guerrier",
+          "strength": 1000,
+          "image": "/buildings/lenora.webp",
+          "slug": "Chateau Lenora",
+        }
+      JSON
+    );
     $this->assertResponseCode(201);
     $this->assertJsonResponse();
     $this->defineIdentifier();
@@ -43,7 +58,19 @@ class BuildingTest extends WebTestCase
   }
   public function testUpdate()
   {
-    $this->client->request('PUT', '/buildings/' . self::$identifier);
+    $this->client->request(
+      'POST',
+      '/buildings/' . self::$identifier,
+      array(), // Parameters
+      array(), // Files
+      array('CONTENT_TYPE' => 'application/json'), // Server
+      <<<JSON
+        {
+          "name": "Lenorae",
+          "caste": "Archer",
+        }
+      JSON
+    );
     $this->assertResponseCode(204);
   }
   public function testDelete()
