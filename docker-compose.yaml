@@ -15,8 +15,6 @@ services:
       - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
-      - MYSQL_USER=guilde_seigneurs
-      - MYSQL_PASSWORD=Y7*Z3PZ9cBNz
       - MYSQL_DATABASE=guilde_seigneurs
   ui:
     image: phpmyadmin
