@@ -34,6 +34,7 @@ class BuildingTest extends WebTestCase
           "strength": 1000,
           "image": "/buildings/lenora.webp",
           "slug": "Chateau Lenora",
+          "rate": 4
         }
       JSON
     );
@@ -59,7 +60,7 @@ class BuildingTest extends WebTestCase
   public function testUpdate()
   {
     $this->client->request(
-      'POST',
+      'PUT',
       '/buildings/' . self::$identifier,
       array(), // Parameters
       array(), // Files
@@ -67,7 +68,7 @@ class BuildingTest extends WebTestCase
       <<<JSON
         {
           "name": "Lenorae",
-          "caste": "Archer",
+          "caste": "Archer"
         }
       JSON
     );

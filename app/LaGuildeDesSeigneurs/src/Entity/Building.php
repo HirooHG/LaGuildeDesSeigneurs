@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\BuildingRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BuildingRepository::class)]
 #[ORM\Table(name: '`building`')]
@@ -16,24 +17,53 @@ class Building
   private ?int $id;
 
   #[ORM\Column(length: 20)]
+  #[Assert\NotNull]
+  #[Assert\NotBlank]
+  #[Assert\Length(
+    min: 3,
+    max: 20,
+  )]
   private ?string $name = "Lenora";
 
   #[ORM\Column(length: 20)]
+  #[Assert\NotNull]
+  #[Assert\NotBlank]
+  #[Assert\Length(
+    min: 3,
+    max: 20,
+  )]
   private ?string $caste = "Guerrier";
 
   #[ORM\Column]
+  #[Assert\PositiveOrZero]
   private ?int $strength = 1000;
 
   #[ORM\Column(length: 50, nullable: true)]
+  #[Assert\Length(
+    min: 5,
+    max: 50,
+  )]
   private ?string $image = "/buildings/lenora.webp";
 
   #[ORM\Column(length: 20)]
+  #[Assert\NotNull]
+  #[Assert\NotBlank]
+  #[Assert\Length(
+    min: 3,
+    max: 20,
+  )]
   private ?string $slug = "chateau-lenora";
 
   #[ORM\Column]
   private ?int $rate = null;
 
   #[ORM\Column(length: 50)]
+  #[Assert\NotNull]
+  #[Assert\NotBlank]
+  #[Assert\Length(
+    min: 40,
+    max: 40,
+  )]
   private ?string $identifier = null;
 
   #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -41,7 +71,7 @@ class Building
 
   #[ORM\Column(type: Types::DATETIME_MUTABLE)]
   private ?\DateTimeInterface $modification = null;
-  
+
   public function toArray()
   {
     return get_object_vars($this);
@@ -114,49 +144,49 @@ class Building
 
   public function getRate(): ?int
   {
-      return $this->rate;
+    return $this->rate;
   }
 
   public function setRate(int $rate): static
   {
-      $this->rate = $rate;
+    $this->rate = $rate;
 
-      return $this;
+    return $this;
   }
 
   public function getIdentifier(): ?string
   {
-      return $this->identifier;
+    return $this->identifier;
   }
 
   public function setIdentifier(string $identifier): static
   {
-      $this->identifier = $identifier;
+    $this->identifier = $identifier;
 
-      return $this;
+    return $this;
   }
 
   public function getCreation(): ?\DateTimeInterface
   {
-      return $this->creation;
+    return $this->creation;
   }
 
   public function setCreation(\DateTimeInterface $creation): static
   {
-      $this->creation = $creation;
+    $this->creation = $creation;
 
-      return $this;
+    return $this;
   }
 
   public function getModification(): ?\DateTimeInterface
   {
-      return $this->modification;
+    return $this->modification;
   }
 
   public function setModification(\DateTimeInterface $modification): static
   {
-      $this->modification = $modification;
+    $this->modification = $modification;
 
-      return $this;
+    return $this;
   }
 }

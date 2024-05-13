@@ -23,20 +23,20 @@ class CharacterControllerTetsTest extends WebTestCase
   {
     $this->client->request(
       'POST',
-      '/characters/',
+      '/characters',
       array(), // Parameters
       array(), // Files
       array('CONTENT_TYPE' => 'application/json'), // Server
       <<<JSON
         {
-        "kind": "Dame",
-        "name": "Maeglin",
-        "surname": "Oeil vif",
-        "caste": "Archer",
-        "knowledge": "Nombres",
-        "intelligence": 120,
-        "strength": 120,
-        "image": "/dames/maeglin.webp"
+          "kind": "Dame",
+          "name": "Maeglin",
+          "surname": "Oeil vif",
+          "caste": "Archer",
+          "knowledge": "Nombres",
+          "intelligence": 120,
+          "strength": 120,
+          "image": "/dames/maeglin.webp"
         }
       JSON
     );

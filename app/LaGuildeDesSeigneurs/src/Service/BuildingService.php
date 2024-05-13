@@ -3,18 +3,21 @@
 namespace App\Service;
 
 use App\Entity\Building;
+use App\Form\BuildingType;
 use App\Repository\BuildingRepository;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BuildingService implements BuildingServiceInterface
 {
   public function __construct(
     private BuildingRepository $buildingRepository,
     private FormFactoryInterface $formFactoryInterface,
+    private ValidatorInterface $validator,
     private EntityManagerInterface $entityManager
   ) {
   }
@@ -23,7 +26,7 @@ class BuildingService implements BuildingServiceInterface
   {
     $building = new Building();
 
-    $this->submit($building, Building::class, $data);
+    $this->submit($building, BuildingType::class, $data);
     $building->setSlug((new Slugify())->slugify($building->getName()));
     $building->setCreation(new \DateTime());
     $building->setModification(new \DateTime());
@@ -89,14 +92,12 @@ class BuildingService implements BuildingServiceInterface
   // Checks if the entity has been well filled
   public function isEntityFilled(Building $building)
   {
-    if (
-      null === $building->getName() ||
-      null === $building->getSlug() ||
-      null === $building->getIdentifier() ||
-      null === $building->getCreation() ||
-      null === $building->getModification()
-    ) {
-      $errorMsg = 'Missing data for Entity -> ' . json_encode($building->toArray());
+    // Vérification du bon fonctionnement en introduisant une erreur
+    $errors = $this->validator->validate($building);
+
+    if (count($errors) > 0) {
+      $errorMsg = (string) $errors . 'Wrong data for Entity -> ';
+      $errorMsg .= json_encode($building->toArray());
       throw new UnprocessableEntityHttpException($errorMsg);
     }
   }
