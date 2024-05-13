@@ -46,3 +46,4 @@ v0.9
 v0.10
 
 - added character put & post form validator
+- same on building
