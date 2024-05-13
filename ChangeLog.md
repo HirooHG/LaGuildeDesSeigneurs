@@ -34,3 +34,15 @@ v0.6
 v0.7
 
 - update route
+
+v0.8
+
+- added delete route
+
+v0.9
+
+- test modifications
+
+v0.10
+
+- added character put & post form validator

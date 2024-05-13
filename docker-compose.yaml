@@ -19,9 +19,10 @@ services:
       - MYSQL_PASSWORD=Y7*Z3PZ9cBNz
       - MYSQL_DATABASE=guilde_seigneurs
   ui:
-    image: dbeaver/cloudbeaver
-    restart: unless-stopped
+    image: phpmyadmin
+    restart: always
     ports:
-      - 8978:8978
-    depends_on:
-      - db
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+      - MYSQL_ROOT_PASSWORD=mysql

@@ -21,7 +21,25 @@ class CharacterControllerTetsTest extends WebTestCase
   # passing tests
   public function testCreate()
   {
-    $this->client->request('POST', '/characters');
+    $this->client->request(
+      'POST',
+      '/characters/',
+      array(), // Parameters
+      array(), // Files
+      array('CONTENT_TYPE' => 'application/json'), // Server
+      <<<JSON
+        {
+        "kind": "Dame",
+        "name": "Maeglin",
+        "surname": "Oeil vif",
+        "caste": "Archer",
+        "knowledge": "Nombres",
+        "intelligence": 120,
+        "strength": 120,
+        "image": "/dames/maeglin.webp"
+        }
+      JSON
+    );
     $this->assertResponseCode(201);
     $this->assertJsonResponse();
     $this->defineIdentifier();
@@ -42,7 +60,20 @@ class CharacterControllerTetsTest extends WebTestCase
   }
   public function testUpdate()
   {
-    $this->client->request('PUT', '/characters/' . self::$identifier);
+    //Tests with partial data array
+    $this->client->request(
+      'PUT',
+      '/characters/' . self::$identifier,
+      array(), // Parameters
+      array(), // Files
+      array('CONTENT_TYPE' => 'application/json'), // Server
+      <<<JSON
+        {
+          "kind": "Seigneur",
+          "name": "Gorthol"
+        }
+      JSON
+    );
     $this->assertResponseCode(204);
   }
   public function testDelete()
