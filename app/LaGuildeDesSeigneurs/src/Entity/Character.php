@@ -16,7 +16,7 @@ class Character
   #[ORM\Column]
   private ?int $id = null;
 
-  #[ORM\Column(length: 40)]
+  #[ORM\Column(length: 40, name: 'gls_identifier')]
   #[Assert\NotNull]
   #[Assert\NotBlank]
   #[Assert\Length(
@@ -25,7 +25,7 @@ class Character
   )]
   private ?string $identifier = null;
 
-  #[ORM\Column(length: 20)]
+  #[ORM\Column(length: 20, name: 'gls_name')]
   #[Assert\NotNull] // Pour que ce ne soit pas null
   #[Assert\NotBlank] // Pour que ce ne soit pas blanc
   #[Assert\Length( //Définit une taille mini et maxi
@@ -34,7 +34,7 @@ class Character
   )]
   private ?string $name = "Fëanturi";
 
-  #[ORM\Column(length: 50)]
+  #[ORM\Column(length: 50, name: 'gls_surname')]
   #[Assert\NotNull]
   #[Assert\NotBlank]
   #[Assert\Length(
@@ -43,7 +43,7 @@ class Character
   )]
   private ?string $surname = "Fascination";
 
-  #[ORM\Column(length: 20, nullable: true)]
+  #[ORM\Column(length: 20, nullable: true, name: 'gls_caste')]
   // Pas de NotNull et NotBlank puisque le champ est nullable
   #[Assert\Length(
     min: 3,
@@ -51,29 +51,29 @@ class Character
   )]
   private ?string $caste = "ElfeNoir";
 
-  #[ORM\Column(length: 20, nullable: true)]
+  #[ORM\Column(length: 20, nullable: true, name: 'gls_knowledge')]
   #[Assert\Length(
     min: 3,
     max: 20,
   )]
   private ?string $knowledge = "Arts";
 
-  #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+  #[ORM\Column(type: Types::SMALLINT, nullable: true, name: 'gls_intelligence')]
   #[Assert\PositiveOrZero] // OU #[Assert\Positive] si on ne veut pas de 0
   private ?int $intelligence = 160;
 
-  #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+  #[ORM\Column(type: Types::SMALLINT, nullable: true, name: 'gls_strength')]
   #[Assert\PositiveOrZero]
   private ?int $strength = 1600;
 
-  #[ORM\Column(length: 50, nullable: true)]
+  #[ORM\Column(length: 50, nullable: true, name: 'gls_image')]
   #[Assert\Length(
     min: 5,
     max: 50,
   )]
   private ?string $image = "/dame/bruh.webp";
 
-  #[ORM\Column(length: 20)]
+  #[ORM\Column(length: 20, name: 'gls_slug')]
   #[Assert\NotNull]
   #[Assert\NotBlank]
   #[Assert\Length(
@@ -82,7 +82,7 @@ class Character
   )]
   private ?string $slug = "TourmenteursDuChaos";
 
-  #[ORM\Column(length: 20)]
+  #[ORM\Column(length: 20, name: 'gls_kind')]
   #[Assert\NotNull]
   #[Assert\NotBlank]
   #[Assert\Length(
@@ -91,10 +91,10 @@ class Character
   )]
   private ?string $kind = "Tourmenteuse";
 
-  #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+  #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, name: 'gls_creation')]
   private ?\DateTimeInterface $creation = null;
 
-  #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+  #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, name: 'gls_modification')]
   private ?\DateTimeInterface $modification = null;
 
   #[ORM\ManyToOne(inversedBy: 'characters')]
