@@ -56,6 +56,18 @@ class BuildingTest extends WebTestCase
     $this->client->request('GET', '/buildings');
     $this->assertResponseCode(200);
     $this->assertJsonResponse();
+
+    $this->client->request('GET', '/buildings/?page=1');
+    $this->assertResponseCode(200);
+    $this->assertJsonResponse();
+
+    $this->client->request('GET', '/buildings/?page=1&size=1');
+    $this->assertResponseCode(200);
+    $this->assertJsonResponse();
+
+    $this->client->request('GET', '/buildings/?size=1');
+    $this->assertResponseCode(200);
+    $this->assertJsonResponse();
   }
   public function testUpdate()
   {

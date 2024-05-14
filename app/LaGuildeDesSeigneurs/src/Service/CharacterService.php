@@ -12,6 +12,8 @@ use LogicException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Cocur\Slugify\Slugify;
+use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -28,6 +30,7 @@ class CharacterService implements CharacterServiceInterface
     private ValidatorInterface $validator,
     private CharacterRepository $characterRepository,
     private EventDispatcherInterface $dispatcher,
+    private PaginatorInterface $paginator,
   ) {
   }
   public function create(string $data): Character
@@ -70,9 +73,18 @@ class CharacterService implements CharacterServiceInterface
     $this->em->flush();
   }
 
-  public function findAllJson(): string
+  public function findAll(): array
   {
-    return $this->serializeJson($this->characterRepository->findAll());
+    return $this->characterRepository->findAll();
+  }
+
+  public function findAllPaginated($query): SlidingPagination
+  {
+    return $this->paginator->paginate(
+      $this->findAll(), // On appelle la même requête
+      $query->getInt('page', 1), // 1 par défaut
+      min(100, $query->getInt('size', 10)) // 10 par défaut et 100 maximum
+    );
   }
   // Submits the form
   public function submit(Character $character, $formName, $data)

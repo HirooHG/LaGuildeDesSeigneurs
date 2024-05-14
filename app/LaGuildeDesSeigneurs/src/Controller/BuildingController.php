@@ -23,10 +23,10 @@ class BuildingController extends AbstractController
       methods: ['GET']
     )
   ]
-  public function index(): JsonResponse
+  public function index(Request $request): JsonResponse
   {
     $this->denyAccessUnlessGranted('buildingIndex', null);
-    $buildings = $this->buildingService->findAll();
+    $buildings = $this->buildingService->findAll($request->query);
 
     return JsonResponse::fromJsonString($this->buildingService->serializeJson($buildings));
   }

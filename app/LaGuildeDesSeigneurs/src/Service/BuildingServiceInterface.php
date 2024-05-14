@@ -10,6 +10,7 @@ interface BuildingServiceInterface
   public function isEntityFilled(Building $building);
   public function submit(Building $building, $formName, $data);
   public function findAll();
+  public function findAllPagination($query);
   public function update(Building $building, string $data);
   public function delete(Building $building);
   public function serializeJson($object);

@@ -7,6 +7,8 @@ use App\Form\BuildingType;
 use App\Repository\BuildingRepository;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
+use Knp\Component\Pager\PaginatorInterface;
 use LogicException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -23,7 +25,8 @@ class BuildingService implements BuildingServiceInterface
     private BuildingRepository $buildingRepository,
     private FormFactoryInterface $formFactoryInterface,
     private ValidatorInterface $validator,
-    private EntityManagerInterface $entityManager
+    private EntityManagerInterface $entityManager,
+    private PaginatorInterface $paginator,
   ) {
   }
 
@@ -47,6 +50,15 @@ class BuildingService implements BuildingServiceInterface
   public function findAll(): array
   {
     return $this->buildingRepository->findAll();
+  }
+
+  public function findAllPagination($query): SlidingPagination
+  {
+    return $this->paginator->paginate(
+      $this->findAll(),
+      $query->getInt('page', 1),
+      min(100, $query->getInt('size', 10))
+    );
   }
 
   public function update(Building $building, string $data): Building
