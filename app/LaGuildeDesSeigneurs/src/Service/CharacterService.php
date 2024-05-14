@@ -4,6 +4,7 @@ namespace App\Service;
 
 use DateTime;
 use App\Entity\Character;
+use App\Event\CharacterEvent;
 use App\Repository\CharacterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\CharacterType;
@@ -11,6 +12,7 @@ use LogicException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Cocur\Slugify\Slugify;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -24,12 +26,15 @@ class CharacterService implements CharacterServiceInterface
     private EntityManagerInterface $em,
     private FormFactoryInterface $formFactoryInterface,
     private ValidatorInterface $validator,
-    private CharacterRepository $characterRepository
+    private CharacterRepository $characterRepository,
+    private EventDispatcherInterface $dispatcher,
   ) {
   }
   public function create(string $data): Character
   {
     $character = new Character();
+    $event = new CharacterEvent($character);
+    $this->dispatcher->dispatch($event, CharacterEvent::CHARACTER_CREATED);
 
     $this->submit($character, CharacterType::class, $data);
     $character->setSlug((new Slugify())->slugify($character->getName()));
@@ -47,6 +52,8 @@ class CharacterService implements CharacterServiceInterface
   public function update(Character $character, string $data): Character
   {
     $this->submit($character, CharacterType::class, $data);
+    $event = new CharacterEvent($character);
+    $this->dispatcher->dispatch($event, CharacterEvent::CHARACTER_UPDATED);
     $character->setSlug((new Slugify())->slugify($character->getName()));
     $character->setModification(new DateTime());
     $this->isEntityFilled($character);

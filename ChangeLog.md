@@ -52,3 +52,12 @@ v0.13
 
 - association between Character & Building
 - object serialization
+
+v0.15
+
+- Documentation
+
+v0.15.1
+
+- Correction
+- object serialization

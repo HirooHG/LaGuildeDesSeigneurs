@@ -65,7 +65,5 @@ class BuildingVoter extends Voter
       default:
         return false;
     }
-
-    throw new LogicException('Invalid attribute: ' . $attribute);
   }
 }

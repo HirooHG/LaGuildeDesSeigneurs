@@ -1,11 +1,16 @@
 {
   "type": "project",
   "license": "proprietary",
-  "name": "HirooHG/la-guide-des-seigneurs",
+  "name": "hiroohg/la-guide-des-seigneurs",
   "description": "API La Guilde Des Seigneurs",
-  "author": {
-    "email": "hugo.golliet.0209@gmail.com"
-  },
+  "author": [
+    {
+      "name": "Hugo Golliet",
+      "email": "hugo.golliet.0209@gmail.com",
+      "homepage": "https://github.com/LaurentMarquet",
+      "role": "Developer"
+    }
+  ],
   "minimum-stability": "stable",
   "prefer-stable": true,
   "require": {
@@ -17,9 +22,11 @@
     "doctrine/doctrine-bundle": "^2.12",
     "doctrine/doctrine-migrations-bundle": "^3.3",
     "doctrine/orm": "^3.1",
+    "nelmio/api-doc-bundle": "^4.26",
     "symfony/apache-pack": "^1.0",
     "symfony/console": "7.0.*",
     "symfony/dotenv": "7.0.*",
+    "symfony/event-dispatcher": "7.0.*",
     "symfony/expression-language": "7.0.*",
     "symfony/flex": "^2",
     "symfony/form": "7.0.*",
@@ -33,6 +40,8 @@
   },
   "require-dev": {
     "doctrine/doctrine-fixtures-bundle": "^3.5",
+    "phpstan/phpstan": "^1.11",
+    "phpstan/phpstan-symfony": "^1.4",
     "phpunit/phpunit": "^9.5",
     "symfony/browser-kit": "7.0.*",
     "symfony/css-selector": "7.0.*",
