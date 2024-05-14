@@ -65,3 +65,7 @@ v0.15.1
 v0.16
 
 - pagination on character & building
+
+v0.16.1
+
+- Caching GET routes

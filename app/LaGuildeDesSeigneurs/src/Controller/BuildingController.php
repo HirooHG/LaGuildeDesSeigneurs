@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Attribute\Route;
 
 class BuildingController extends AbstractController
@@ -16,6 +17,7 @@ class BuildingController extends AbstractController
   {
   }
 
+  #[Cache(public: true, maxage: 3600, mustRevalidate: true)]
   #[
     Route(
       '/buildings',
@@ -53,6 +55,7 @@ class BuildingController extends AbstractController
     return $response;
   }
 
+  #[Cache(public: true, maxage: 3600, mustRevalidate: true)]
   #[
     Route(
       '/buildings/{identifier}',

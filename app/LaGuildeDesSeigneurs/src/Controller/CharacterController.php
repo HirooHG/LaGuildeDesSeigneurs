@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 
 class CharacterController extends AbstractController
 {
@@ -39,6 +40,7 @@ class CharacterController extends AbstractController
     description: 'Not found'
   )]
   #[OA\Tag(name: 'Character')]
+  #[Cache(public: true, maxage: 3600, mustRevalidate: true)]
   #[
     Route(
       '/characters/{identifier}',
@@ -167,6 +169,7 @@ class CharacterController extends AbstractController
     schema: new OA\Schema(type: 'integer', default: 10, minimum: 1, maximum: 100),
     required: true
   )]
+  #[Cache(public: true, maxage: 3600, mustRevalidate: true)]
   #[
     Route(
       '/characters',
