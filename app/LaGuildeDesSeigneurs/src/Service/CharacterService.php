@@ -12,6 +12,11 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Cocur\Slugify\Slugify;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class CharacterService implements CharacterServiceInterface
 {
@@ -58,14 +63,9 @@ class CharacterService implements CharacterServiceInterface
     $this->em->flush();
   }
 
-  public function findAll(): array
+  public function findAllJson(): string
   {
-    $charactersFinal = array();
-    $characters = $this->characterRepository->findAll();
-    foreach ($characters as $character) {
-      $charactersFinal[] = $character->toArray();
-    }
-    return $charactersFinal;
+    return $this->serializeJson($this->characterRepository->findAll());
   }
   // Submits the form
   public function submit(Character $character, $formName, $data)
@@ -96,8 +96,22 @@ class CharacterService implements CharacterServiceInterface
 
     if (count($errors) > 0) {
       $errorMsg = (string) $errors . 'Wrong data for Entity -> ';
-      $errorMsg .= json_encode($character->toArray());
+      $errorMsg .= json_encode($this->serializeJson($character));
       throw new UnprocessableEntityHttpException($errorMsg);
     }
+  }
+
+  // Serializes the object(s)
+  public function serializeJson($object)
+  {
+    $encoders = new JsonEncoder();
+    $defaultContext = [
+      AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+        return $object->getId();
+      },
+    ];
+    $normalizers = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
+    $serializer = new Serializer([new DateTimeNormalizer(), $normalizers], [$encoders]);
+    return $serializer->serialize($object, 'json');
   }
 }

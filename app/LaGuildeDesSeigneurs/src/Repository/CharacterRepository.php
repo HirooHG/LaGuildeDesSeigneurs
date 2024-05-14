@@ -28,10 +28,12 @@ class CharacterRepository extends ServiceEntityRepository
       ->getResult();
   }
 
-  public function findOneByIdentifier($identifier): ?Character
+  public function findOneByIdentifier(string $identifier): ?Character
   {
-    return $this->createQueryBuilder('Character')
-      ->andWhere('Character.identifier = :identifier')
+    return $this->createQueryBuilder('c')
+      ->select('c', 'b')
+      ->leftJoin('c.building', 'b')
+      ->where('c.identifier = :identifier')
       ->setParameter('identifier', $identifier)
       ->getQuery()
       ->getOneOrNullResult();

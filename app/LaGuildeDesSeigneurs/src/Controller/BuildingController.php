@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Building;
 use App\Service\BuildingServiceInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,9 +26,9 @@ class BuildingController extends AbstractController
   public function index(): JsonResponse
   {
     $this->denyAccessUnlessGranted('buildingIndex', null);
-    $characters = $this->buildingService->findAll();
+    $buildings = $this->buildingService->findAll();
 
-    return new JsonResponse($characters);
+    return JsonResponse::fromJsonString($this->buildingService->serializeJson($buildings));
   }
 
   #[
@@ -42,7 +43,7 @@ class BuildingController extends AbstractController
     $this->denyAccessUnlessGranted('buildingCreate', null);
     $building = $this->buildingService->create($request->getContent());
 
-    $response = new JsonResponse($building->toArray(), JsonResponse::HTTP_CREATED);
+    $response = JsonResponse::fromJsonString($this->buildingService->serializeJson($building), JsonResponse::HTTP_CREATED);
     $url = $this->generateUrl(
       'app_building_display',
       ['identifier' => $building->getIdentifier()]
@@ -60,11 +61,15 @@ class BuildingController extends AbstractController
       methods: ['GET']
     )
   ]
-  public function display(Building $building): JsonResponse
-  {
+  public function display(
+    #[MapEntity(expr: 'repository.findOneByIdentifier(identifier)')]
+    Building $building
+  ): JsonResponse {
     $this->denyAccessUnlessGranted('buildingDisplay', $building);
-
-    return new JsonResponse($building->toArray());
+    // Mais on l'utilise de manière statique
+    // d'où l'utilisation des ::
+    // et on appelle la méthode fromJsonString()
+    return JsonResponse::fromJsonString($this->buildingService->serializeJson($building));
   }
 
   #[

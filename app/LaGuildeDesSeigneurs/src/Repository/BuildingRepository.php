@@ -28,4 +28,14 @@ class BuildingRepository extends ServiceEntityRepository
       ->getQuery()
       ->getResult();
   }
+  public function findOneByIdentifier(string $identifier): ?Building
+  {
+    return $this->createQueryBuilder('p')
+      ->select('p', 'c')
+      ->leftJoin('p.characters', 'c')
+      ->where('p.identifier = :identifier')
+      ->setParameter('identifier', $identifier)
+      ->getQuery()
+      ->getOneOrNullResult();
+  }
 }

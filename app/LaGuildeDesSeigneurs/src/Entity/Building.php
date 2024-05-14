@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BuildingRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -72,9 +74,15 @@ class Building
   #[ORM\Column(type: Types::DATETIME_MUTABLE)]
   private ?\DateTimeInterface $modification = null;
 
-  public function toArray()
+  /**
+   * @var Collection<int, Character>
+   */
+  #[ORM\OneToMany(targetEntity: Character::class, mappedBy: 'building')]
+  private Collection $characters;
+
+  public function __construct()
   {
-    return get_object_vars($this);
+    $this->characters = new ArrayCollection();
   }
 
   public function getId(): ?int
@@ -186,6 +194,36 @@ class Building
   public function setModification(\DateTimeInterface $modification): static
   {
     $this->modification = $modification;
+
+    return $this;
+  }
+
+  /**
+   * @return Collection<int, Character>
+   */
+  public function getCharacters(): Collection
+  {
+    return $this->characters;
+  }
+
+  public function addCharacter(Character $character): static
+  {
+    if (!$this->characters->contains($character)) {
+      $this->characters->add($character);
+      $character->setBuilding($this);
+    }
+
+    return $this;
+  }
+
+  public function removeCharacter(Character $character): static
+  {
+    if ($this->characters->removeElement($character)) {
+      // set the owning side to null (unless already changed)
+      if ($character->getBuilding() === $this) {
+        $character->setBuilding(null);
+      }
+    }
 
     return $this;
   }

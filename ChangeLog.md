@@ -47,3 +47,8 @@ v0.10
 
 - added character put & post form validator
 - same on building
+
+v0.13
+
+- association between Character & Building
+- object serialization

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Character;
 use App\Service\CharacterServiceInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,11 +24,13 @@ class CharacterController extends AbstractController
       methods: ['GET']
     )
   ]
-  public function display(Character $character): JsonResponse
-  {
+  public function display(
+    #[MapEntity(expr: 'repository.findOneByIdentifier(identifier)')]
+    Character $character
+  ): JsonResponse {
     $this->denyAccessUnlessGranted('characterDisplay', $character);
 
-    return new JsonResponse($character->toArray());
+    return JsonResponse::fromJsonString($this->characterService->serializeJson($character));
   }
 
   #[
@@ -72,9 +75,7 @@ class CharacterController extends AbstractController
   public function index(): JsonResponse
   {
     $this->denyAccessUnlessGranted('characterIndex', null);
-    $characters = $this->characterService->findAll();
-
-    return new JsonResponse($characters);
+    return JsonResponse::fromJsonString($this->characterService->findAllJson());
   }
 
   // src/Controller/CharacterController.php
@@ -84,7 +85,7 @@ class CharacterController extends AbstractController
   {
     $character = $this->characterService->create($request->getContent());
 
-    $response = new JsonResponse($character->toArray(), JsonResponse::HTTP_CREATED);
+    $response = JsonResponse::fromJsonString($this->characterService->serializeJson($character), JsonResponse::HTTP_CREATED);
     $url = $this->generateUrl(
       'app_character_display',
       ['identifier' => $character->getIdentifier()]

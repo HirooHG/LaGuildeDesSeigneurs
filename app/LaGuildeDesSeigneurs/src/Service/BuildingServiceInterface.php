@@ -12,4 +12,5 @@ interface BuildingServiceInterface
   public function findAll();
   public function update(Building $building, string $data);
   public function delete(Building $building);
+  public function serializeJson($object);
 }

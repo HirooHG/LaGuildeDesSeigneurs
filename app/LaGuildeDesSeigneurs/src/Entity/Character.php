@@ -97,10 +97,8 @@ class Character
   #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
   private ?\DateTimeInterface $modification = null;
 
-  public function toArray()
-  {
-    return get_object_vars($this);
-  }
+  #[ORM\ManyToOne(inversedBy: 'characters')]
+  private ?Building $building = null;
 
   public function getId(): ?int
   {
@@ -247,6 +245,18 @@ class Character
   public function setModification(?\DateTimeInterface $modification): static
   {
     $this->modification = $modification;
+
+    return $this;
+  }
+
+  public function getBuilding(): ?Building
+  {
+    return $this->building;
+  }
+
+  public function setBuilding(?Building $building): static
+  {
+    $this->building = $building;
 
     return $this;
   }
