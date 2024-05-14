@@ -61,3 +61,7 @@ v0.15.1
 
 - Correction
 - object serialization
+
+v0.16
+
+- pagination on character & building
