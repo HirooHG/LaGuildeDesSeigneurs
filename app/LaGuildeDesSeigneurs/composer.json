@@ -7,7 +7,7 @@
     {
       "name": "Hugo Golliet",
       "email": "hugo.golliet.0209@gmail.com",
-      "homepage": "https://github.com/LaurentMarquet",
+      "homepage": "https://github.com/HirooHG",
       "role": "Developer"
     }
   ],
@@ -29,6 +29,7 @@
     "symfony/dotenv": "7.0.*",
     "symfony/event-dispatcher": "7.0.*",
     "symfony/expression-language": "7.0.*",
+    "symfony/finder": "7.0.*",
     "symfony/flex": "^2",
     "symfony/form": "7.0.*",
     "symfony/framework-bundle": "7.0.*",
@@ -36,8 +37,11 @@
     "symfony/runtime": "7.0.*",
     "symfony/security-bundle": "7.0.*",
     "symfony/serializer": "7.0.*",
+    "symfony/twig-bundle": "7.0.*",
     "symfony/validator": "7.0.*",
-    "symfony/yaml": "7.0.*"
+    "symfony/yaml": "7.0.*",
+    "twig/extra-bundle": "^2.12|^3.0",
+    "twig/twig": "^2.12|^3.0"
   },
   "require-dev": {
     "doctrine/doctrine-fixtures-bundle": "^3.5",

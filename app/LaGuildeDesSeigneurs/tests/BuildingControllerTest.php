@@ -4,7 +4,7 @@ namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class BuildingTest extends WebTestCase
+class BuildingControllerTest extends WebTestCase
 {
   // all like character test
   private $client;
@@ -57,15 +57,15 @@ class BuildingTest extends WebTestCase
     $this->assertResponseCode(200);
     $this->assertJsonResponse();
 
-    $this->client->request('GET', '/buildings/?page=1');
+    $this->client->request('GET', '/buildings?page=1');
     $this->assertResponseCode(200);
     $this->assertJsonResponse();
 
-    $this->client->request('GET', '/buildings/?page=1&size=1');
+    $this->client->request('GET', '/buildings?page=1&size=1');
     $this->assertResponseCode(200);
     $this->assertJsonResponse();
 
-    $this->client->request('GET', '/buildings/?size=1');
+    $this->client->request('GET', '/buildings?size=1');
     $this->assertResponseCode(200);
     $this->assertJsonResponse();
   }

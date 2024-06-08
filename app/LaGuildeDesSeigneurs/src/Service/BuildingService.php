@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use LogicException;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -52,7 +53,7 @@ class BuildingService implements BuildingServiceInterface
         return $this->buildingRepository->findAll();
     }
 
-    public function findAllPagination($query): SlidingPagination
+    public function findAllPaginated($query): SlidingPagination
     {
         return $this->paginator->paginate(
             $this->findAll(),
@@ -63,7 +64,7 @@ class BuildingService implements BuildingServiceInterface
 
     public function update(Building $building, string $data): Building
     {
-        $this->submit($building, Building::class, $data);
+        $this->submit($building, BuildingType::class, $data);
         $building->setSlug((new Slugify())->slugify($building->getName()));
         $building->setModification(new \DateTime());
         $this->isEntityFilled($building);
@@ -155,11 +156,29 @@ class BuildingService implements BuildingServiceInterface
             return;
         }
 
+        $identifier = $object->getIdentifier();
         $links = [
-            "self" => ["href" => "/buildings/" . $object->getIdentifier()],
-            "update" => ["href" => "/buildings/" . $object->getIdentifier()],
-            "delete" => ["href" => "/buildings/" . $object->getIdentifier()],
+            "self" => ["href" => "/buildings/" . $identifier],
+            "update" => ["href" => "/buildings/" . $identifier],
+            "delete" => ["href" => "/buildings/" . $identifier],
         ];
         $object->setLinks($links);
+    }
+    public function getImages(int $number): array
+    {
+        $folder = __DIR__ . '/../../public/images/buildings';
+        $finder = new Finder();
+        $finder
+            ->files() // On veut des fichiers
+            ->in($folder) // Dans le dossier images
+            ->sortByName() // On trie par nom
+        ;
+        $images = array();
+        foreach ($finder as $file) {
+            // dump($file); // Si vous voulez voir le contenu de file
+            $images[] = str_replace(__DIR__ . '/../../public', '', $file->getPathname());
+        }
+        shuffle($images);
+        return array_slice($images, 0, $number, true);
     }
 }

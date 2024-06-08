@@ -15,6 +15,7 @@ use Cocur\Slugify\Slugify;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -163,11 +164,42 @@ class CharacterService implements CharacterServiceInterface
             return;
         }
 
+        $identifier = $object->getIdentifier();
         $links = [
-            "self" => ["href" => "/characters/" . $object->getIdentifier()],
-            "update" => ["href" => "/characters/" . $object->getIdentifier()],
-            "delete" => ["href" => "/characters/" . $object->getIdentifier()],
+            "self" => ["href" => "/characters/" . $identifier],
+            "update" => ["href" => "/characters/" . $identifier],
+            "delete" => ["href" => "/characters/" . $identifier],
         ];
         $object->setLinks($links);
+    }
+
+    public function getImages(int $number, ?string $kind = null): array
+    {
+        $folder = __DIR__ . '/../../public/images/';
+        $finder = new Finder();
+        $finder
+            ->files() // On veut des fichiers
+            ->in($folder) // Dans le dossier images
+            ->notPath('/buildings/') // On ne veut pas les buildings
+            ->sortByName() // On trie par nom
+        ;
+
+        if (null !== $kind) {
+            $finder->path('/' . $kind . '/');
+        }
+
+        $images = array();
+        foreach ($finder as $file) {
+            // dump($file); // Si vous voulez voir le contenu de file
+            $images[] = str_replace(__DIR__ . '/../../public', '', $file->getPathname());
+        }
+        shuffle($images);
+        return array_slice($images, 0, $number, true);
+    }
+
+    // Gets random images by kind
+    public function getImagesKind(string $kind, int $number): array
+    {
+        return $this->getImages($number, $kind);
     }
 }

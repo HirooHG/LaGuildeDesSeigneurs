@@ -226,4 +226,74 @@ class CharacterController extends AbstractController
 
     return $response;
   }
+  // IMAGES
+  #[OA\Parameter(
+    name: 'number',
+    description: 'Number of images',
+    in: 'path',
+    required: false,
+    schema: new OA\Schema(type: 'integer')
+  )]
+  #[OA\Response(
+    response: 200,
+    description: 'Returns links for images'
+  )]
+  #[OA\Response(
+    response: 403,
+    description: 'Access denied'
+  )]
+  #[OA\Tag(name: 'Character')]
+  #[Route(
+    '/characters/images/{number}',
+    name: 'app_character_images',
+    requirements: ['number' => '^([0-9]{1,2})$'],
+    methods: ['GET']
+  )]
+  public function images(int $number = 1): JsonResponse
+  {
+    $this->denyAccessUnlessGranted('characterIndex', null);
+    $images = $this->characterService->getImages($number);
+    return new JsonResponse($images);
+  }
+
+  // IMAGES WITH KIND
+  #[OA\Parameter(
+    name: 'number',
+    description: 'Number of images',
+    in: 'path',
+    required: false,
+    schema: new OA\Schema(type: 'integer')
+  )]
+  #[OA\Parameter(
+    name: 'kind',
+    description: 'Kind of Character',
+    in: 'path',
+    required: false,
+    schema: new OA\Schema(type: 'string'),
+    example: 'dames|seigneurs|tourmenteurs|tourmenteuses'
+  )]
+  #[OA\Response(
+    response: 200,
+    description: 'Returns links for images'
+  )]
+  #[OA\Response(
+    response: 403,
+    description: 'Access denied'
+  )]
+  #[OA\Tag(name: 'Character')]
+  #[Route(
+    '/characters/images/{kind}/{number}',
+    name: 'app_character_images_kind',
+    requirements: [
+      'number' => '^([0-9]{1,2})$',
+      'kind' => '^(dames|seigneurs|tourmenteurs|tourmenteuses)$'
+    ],
+    methods: ['GET']
+  )]
+  public function imagesKind(string $kind, int $number = 1): JsonResponse
+  {
+    $this->denyAccessUnlessGranted('characterIndex', null);
+    $images = $this->characterService->getImagesKind($kind, $number);
+    return new JsonResponse($images);
+  }
 }

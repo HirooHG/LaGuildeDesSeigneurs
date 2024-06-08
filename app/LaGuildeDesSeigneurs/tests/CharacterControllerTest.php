@@ -4,7 +4,7 @@ namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class CharacterControllerTetsTest extends WebTestCase
+class CharacterControllerTest extends WebTestCase
 {
 
   private $client;
@@ -58,15 +58,15 @@ class CharacterControllerTetsTest extends WebTestCase
     $this->assertResponseCode(200);
     $this->assertJsonResponse();
 
-    $this->client->request('GET', '/characters/?page=1');
+    $this->client->request('GET', '/characters?page=1');
     $this->assertResponseCode(200);
     $this->assertJsonResponse();
 
-    $this->client->request('GET', '/characters/?page=1&size=1');
+    $this->client->request('GET', '/characters?page=1&size=1');
     $this->assertResponseCode(200);
     $this->assertJsonResponse();
 
-    $this->client->request('GET', '/characters/?size=1');
+    $this->client->request('GET', '/characters?size=1');
     $this->assertResponseCode(200);
     $this->assertJsonResponse();
   }
@@ -92,6 +92,28 @@ class CharacterControllerTetsTest extends WebTestCase
   {
     $this->client->request('DELETE', '/characters/' . self::$identifier);
     $this->assertResponseCode(204);
+  }
+
+  // Tests images
+  public function testImages()
+  {
+    //Tests without kind
+    $this->client->request('GET', '/characters/images');
+    $this->assertJsonResponse();
+    $this->client->request('GET', '/characters/images/3');
+    $this->assertJsonResponse();
+
+    //Tests with kind
+    $this->client->request('GET', '/characters/images/dames');
+    $this->assertJsonResponse();
+    $this->client->request('GET', '/characters/images/dames/3');
+    $this->assertJsonResponse();
+    $this->client->request('GET', '/characters/images/seigneurs/3');
+    $this->assertJsonResponse();
+    $this->client->request('GET', '/characters/images/tourmenteurs/3');
+    $this->assertJsonResponse();
+    $this->client->request('GET', '/characters/images/tourmenteuses/3');
+    $this->assertJsonResponse();
   }
 
   ###

@@ -20,4 +20,8 @@ interface CharacterServiceInterface
     public function serializeJson($object);
     //set links
     public function setLinks($character);
+    // Gets random images
+    public function getImages(int $number, ?string $kind = null): array;
+    // Gets random images by kind
+    public function getImagesKind(string $kind, int $number): array;
 }
