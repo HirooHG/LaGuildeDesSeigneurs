@@ -69,3 +69,7 @@ v0.16
 v0.16.1
 
 - Caching GET routes
+
+v0.17
+
+- HateOs implementation
