@@ -22,6 +22,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
 
 class CharacterService implements CharacterServiceInterface
 {
@@ -136,21 +139,18 @@ class CharacterService implements CharacterServiceInterface
                 return $object->getId();
             },
         ];
-        $normalizers = new ObjectNormalizer(
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            $defaultContext
-        );
+        $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader());
+        $normalizers = new ObjectNormalizer($classMetadataFactory, null, null, null, null, null, $defaultContext);
         $serializer = new Serializer(
             [new DateTimeNormalizer(), $normalizers],
             [$encoders]
         );
         $this->setLinks($object);
-        return $serializer->serialize($object, "json");
+        $context = (new ObjectNormalizerContextBuilder())
+            ->withGroups(['character'])
+            ->toArray();
+
+        return $serializer->serialize($object, "json", $context);
     }
 
     public function setLinks($object): void

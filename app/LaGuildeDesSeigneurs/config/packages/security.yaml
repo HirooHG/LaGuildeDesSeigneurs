@@ -18,6 +18,8 @@ security:
       provider: app_user_provider
       json_login:
         check_path: app_signin
+      custom_authenticators:
+        - App\Security\ApiKeyAuthenticator
 
       # activate different ways to authenticate
       # https://symfony.com/doc/current/security.html#the-firewall
@@ -30,6 +32,9 @@ security:
   access_control:
     # - { path: ^/admin, roles: ROLE_ADMIN }
     # - { path: ^/profile, roles: ROLE_USER }
+    - { path: ^/, roles: ROLE_USER }
+    - { path: ^/api/doc, roles: PUBLIC_ACCESS }
+    - { path: ^/api/doc.json, roles: PUBLIC_ACCESS }
 
 when@test:
   security:

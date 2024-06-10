@@ -7,23 +7,27 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BuildingRepository::class)]
 #[ORM\Table(name: "`building`")]
 class Building
 {
+    #[Groups(['building', 'character'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id;
 
+    #[Groups(['building', 'character'])]
     #[ORM\Column(length: 20)]
     #[Assert\NotNull]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3, max: 20)]
     private ?string $name = "Lenora";
 
+    #[Groups(['building'])]
     #[ORM\Column(length: 20)]
     #[Assert\NotNull]
     #[Assert\NotBlank]

@@ -4,11 +4,16 @@ namespace App\Security\Voter;
 
 use App\Entity\Character;
 use LogicException;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class CharacterVoter extends Voter
 {
+  public function __construct(
+    private Security $security
+  ) {
+  }
   public const CHARACTER_DISPLAY = 'characterDisplay';
   public const CHARACTER_CREATE = 'characterCreate';
   public const CHARACTER_INDEX = 'characterIndex';
@@ -35,12 +40,12 @@ class CharacterVoter extends Voter
 
   private function canUpdate($token, $subject)
   {
-    return true;
+    return $this->security->isGranted('ROLE_ADMIN') || $subject->getUser()->getId() === $token->getUser()->getId();
   }
 
   private function canDelete($token, $subject)
   {
-    return true;
+    return $this->security->isGranted('ROLE_ADMIN') || $subject->getUser()->getId() === $token->getUser()->getId();
   }
 
   protected function supports(string $attribute, mixed $subject): bool

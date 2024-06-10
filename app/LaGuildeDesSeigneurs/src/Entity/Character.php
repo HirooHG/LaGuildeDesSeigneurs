@@ -5,18 +5,21 @@ namespace App\Entity;
 use App\Repository\CharacterRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CharacterRepository::class)]
 #[ORM\Table(name: "`character`")]
 class Character
 {
+    #[Groups(['character', 'building'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null; // si on veut une taille fixe il suffit
     // de mettre la même valeur pour min et max
 
+    #[Groups(['character', 'building'])]
     #[ORM\Column(length: 40, name: "gls_identifier")]
     #[Assert\NotNull]
     #[Assert\NotBlank]
@@ -26,6 +29,7 @@ class Character
     //Définit une taille mini et maxi
     // Messages pour customisation, sinon on peut les supprimer
 
+    #[Groups(['character'])]
     #[ORM\Column(length: 20, name: "gls_name")]
     #[Assert\NotNull]
     #[Assert\NotBlank]

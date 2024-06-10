@@ -2,11 +2,12 @@
 
 namespace App\Tests;
 
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class CharacterControllerTest extends WebTestCase
 {
-
+  private static $userId;
   private $client;
 
   private $content;
@@ -15,12 +16,18 @@ class CharacterControllerTest extends WebTestCase
   public function setUp(): void
   {
     $this->client = static::createClient();
+
+    $userRepository = static::getContainer()->get(UserRepository::class);
+    $testUser = $userRepository->findOneByEmail('contact@example.com');
+    self::$userId = $testUser->getId();
+    $this->client->loginUser($testUser);
   }
 
   ###
   # passing tests
   public function testCreate()
   {
+    $userId = self::$userId;
     $this->client->request(
       'POST',
       '/characters',
@@ -36,7 +43,8 @@ class CharacterControllerTest extends WebTestCase
           "knowledge": "Nombres",
           "intelligence": 120,
           "strength": 120,
-          "image": "/dames/maeglin.webp"
+          "image": "/dames/maeglin.webp",
+          "userId": "{$userId}"
         }
       JSON
     );

@@ -19,6 +19,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
 
 class BuildingService implements BuildingServiceInterface
 {
@@ -128,21 +131,17 @@ class BuildingService implements BuildingServiceInterface
                 return $object->getId(); // Ce qu'il doit retourner
             },
         ];
-        $normalizers = new ObjectNormalizer(
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            $defaultContext
-        );
+        $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader());
+        $normalizers = new ObjectNormalizer($classMetadataFactory, null, null, null, null, null, $defaultContext);
         $serializer = new Serializer(
             [new DateTimeNormalizer(), $normalizers],
             [$encoders]
         );
         $this->setLinks($object);
-        return $serializer->serialize($object, "json");
+        $context = (new ObjectNormalizerContextBuilder())
+            ->withGroups(['building'])
+            ->toArray();
+        return $serializer->serialize($object, "json", $context);
     }
 
     // Defines the links for HATEOAS
