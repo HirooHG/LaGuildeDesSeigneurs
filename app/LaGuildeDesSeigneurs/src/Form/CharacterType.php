@@ -12,6 +12,7 @@ class CharacterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('user')
             ->add('identifier')
             ->add('name')
             ->add('surname')
@@ -27,8 +28,7 @@ class CharacterType extends AbstractType
             ])
             ->add('modification', null, [
                 'widget' => 'single_text',
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
