@@ -157,14 +157,14 @@ class CharacterController extends AbstractController
   #[OA\Tag(name: 'Character')]
   #[OA\Parameter(
     name: 'page',
-    in: 'path',
+    in: 'query',
     description: 'Number of the page',
     schema: new OA\Schema(type: 'integer', default: 1),
     required: true
   )]
   #[OA\Parameter(
     name: 'size',
-    in: 'path',
+    in: 'query',
     description: 'Number of records',
     schema: new OA\Schema(type: 'integer', default: 10, minimum: 1, maximum: 100),
     required: true
