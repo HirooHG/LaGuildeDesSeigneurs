@@ -77,6 +77,11 @@ class CharacterControllerTest extends WebTestCase
     $this->client->request('GET', '/characters?size=1');
     $this->assertResponseCode(200);
     $this->assertJsonResponse();
+
+
+    $this->client->request('GET', '/characters?intelligence=190');
+    $this->assertResponseCode(200);
+    $this->assertJsonResponse();
   }
   public function testUpdate()
   {
