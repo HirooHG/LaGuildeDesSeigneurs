@@ -90,6 +90,12 @@ class CharacterService implements CharacterServiceInterface
             min(100, $query->getInt("size", 10)) // 10 par défaut et 100 maximum
         );
     }
+    public function findAllWithIntelligence(array $characters, int $queryIntelligence)
+    {
+        return array_filter($characters, function ($character) use ($queryIntelligence) {
+            return $character->getIntelligence() >= $queryIntelligence;
+        });
+    }
     // Submits the form
     public function submit(Character $character, $formName, $data)
     {
@@ -159,6 +165,13 @@ class CharacterService implements CharacterServiceInterface
         if ($object instanceof SlidingPagination) {
             // Si oui, on boucle sur les items
             foreach ($object->getItems() as $item) {
+                $this->setLinks($item);
+            }
+            return;
+        }
+        // Teste si l'objet est un array
+        if (is_array($object)) {
+            foreach ($object as $item) {
                 $this->setLinks($item);
             }
             return;

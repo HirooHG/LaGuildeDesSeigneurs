@@ -73,3 +73,11 @@ v0.16.1
 v0.17
 
 - HateOs implementation
+
+v0.1
+
+- Stable version of API
+
+v0.1.1
+
+- get all characters filtered by intelligence

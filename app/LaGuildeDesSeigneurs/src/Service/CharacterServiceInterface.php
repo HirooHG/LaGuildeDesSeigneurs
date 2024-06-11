@@ -24,4 +24,6 @@ interface CharacterServiceInterface
     public function getImages(int $number, ?string $kind = null): array;
     // Gets random images by kind
     public function getImagesKind(string $kind, int $number): array;
+    // find all with intelligence
+    public function findAllWithIntelligence(array $characters, int $queryIntelligence);
 }

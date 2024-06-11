@@ -169,6 +169,13 @@ class CharacterController extends AbstractController
     schema: new OA\Schema(type: 'integer', default: 10, minimum: 1, maximum: 100),
     required: true
   )]
+  #[OA\Parameter(
+    name: 'intelligence',
+    in: 'query',
+    description: 'Intelligence properties',
+    schema: new OA\Schema(type: 'integer', default: 0, minimum: 1, maximum: 250),
+    required: true
+  )]
   #[Cache(public: true, maxage: 3600, mustRevalidate: true)]
   #[
     Route(
@@ -180,7 +187,13 @@ class CharacterController extends AbstractController
   public function index(Request $request): JsonResponse
   {
     $this->denyAccessUnlessGranted('characterIndex', null);
-    $characters = $this->characterService->serializeJson($this->characterService->findAllPaginated($request->query));
+    $query = $request->query;
+    $characters = $this->characterService->findAllPaginated($query);
+
+    $intelligence = $query->getInt('intelligence', 0);
+    $characters = $this->characterService->findAllWithIntelligence($characters, $intelligence);
+
+    $characters = $this->characterService->serializeJson($characters);
     return JsonResponse::fromJsonString($characters);
   }
 
